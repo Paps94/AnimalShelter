@@ -33,7 +33,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     )}
                 </div>
 
-                <div className="min-h-screen h-full w-full p-8 bg-orange-200 dark:bg-slate-900">
+                <div className="min-h-screen h-[2000px] w-full p-8 bg-orange-200 dark:bg-slate-900">
                     
                 </div>
                 <Tooltip id="generalTooltip" className="tooltip"/>

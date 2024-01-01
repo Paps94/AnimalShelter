@@ -5,7 +5,7 @@
 @layer base {
     :root {
         --color-dark-blue: #003A79;
-        --color-mid-blue: #007ABD;
+        --color-light-blue: #007ABD;
         --color-light-blue: #7CB1DD;
         --color-light-yellow: #fff3d1;
         --color-yellow: #E9AB00;
@@ -32,19 +32,17 @@
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: var(--color-mid-blue);
-    border-radius: 10px;
-    border: 1px solid var(--color-mid-blue);
+    background-color: var(--color-light-blue);
+    border: 1px solid var(--color-light-blue);
 }
 
 .dark *::-webkit-scrollbar-track {
-    background: #374151;
+    background: #fff7ed;
 }
 
 .dark *::-webkit-scrollbar-thumb {
-    background-color: #E5E7EB;
-    border-radius: 10px;
-    border: 1px solid #E5E7EB;
+    background-color: #fdba74;
+    border: 1px solid #fdba74;
 }
 
 /* Dark mode tooltip  */
