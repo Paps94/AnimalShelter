@@ -1,5 +1,6 @@
 import { Link, Head } from '@inertiajs/react';
 import { Tooltip } from 'react-tooltip';
+import Button from '@/Components/Button';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
@@ -34,7 +35,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 </div>
 
                 <div className="min-h-screen h-full w-full p-8 bg-orange-200 dark:bg-slate-900">
-                    Main content here
+
                 </div>
                 <Tooltip id="generalTooltip" className="tooltip"/>
             </div>
