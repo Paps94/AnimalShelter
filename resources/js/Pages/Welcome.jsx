@@ -1,17 +1,91 @@
+import React, { useState } from "react";
 import { Link, Head } from '@inertiajs/react';
 import { Tooltip } from 'react-tooltip';
-import Button from '@/Components/Button';
+import Table, { DefaultColumnFilter, SelectColumnFilter } from '@/Components/Table/Table';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export default function Welcome({ auth, laravelVersion, phpVersion }) {
+export default function Welcome({ auth, request }) {
+
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: "Avatar", 
+                Cell: ({row}) => (
+                    <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                )
+            },
+            {
+                Header: "Name",
+                accessor: "name",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Type",
+                accessor: "type",
+                Filter: DefaultColumnFilter,
+                meta: request
+            },
+            {
+                Header: "Breed",
+                accessor: "breed",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Age",
+                accessor: "age",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Weight",
+                accessor: "weight",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Sex",
+                accessor: "sex",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Location",
+                accessor: "center",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "# Day in shelter",
+                accessor: "days_in_shelter",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Living with children",
+                accessor: "living_with_children",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Living with dogs",
+                accessor: "living_with_dogs",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Living with cats",
+                accessor: "living_with_cats",
+                Filter: DefaultColumnFilter,
+            },
+        ],
+        []
+    );
+
     return (
         <>
             <Head title="Welcome" />
-            <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center dark:bg-dots-lighter dark:selection:bg-orange-300 selection:bg-blue-400 selection:text-white tooltipParent transition ease-in-out duration-150 bg-orange-200 dark:bg-slate-900">
+            <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center dark:bg-dots-lighter dark:selection:bg-orange-300 selection:bg-blue-400 selection:text-white tooltipParent transition ease-in-out duration-300 bg-orange-100 dark:bg-slate-900">
                 <div className="sm:fixed sm:top-0 sm:right-0 p-6 text-end">
                     {auth.user ? (
                         <Link
                             href={route('dashboard')}
-                            className="mx-1 bg-blue-50 dark:bg-orange-50 shadow-blue-400 shadow-[4px_4px_0_0] dark:shadow-orange-300 dark:shadow-[4px_4px_0_0] text-gray-700 cursor-pointer inline-block font-semibold text-md leading-[35px] text-center no-underline select-none touch-manipulation px-[18px] py-0 rounded-[30px] border-2 border-solid border-gray-700 hover:bg-blue-100  dark:hover:bg-orange-100 active:shadow-gray-700 active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5"
+                            className="mx-1 bg-blue-50 dark:bg-orange-50 shadow-blue-400 shadow-[4px_4px_0_0] dark:shadow-orange-300 dark:shadow-[4px_4px_0_0] text-gray-700 cursor-pointer inline-block font-semibold text-md leading-[35px] text-center no-underline select-none touch-manipulation px-[18px] py-0 rounded-[30px] border-2 border-solid border-gray-700 hover:scale-110 active:shadow-gray-700 active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5 transition ease-in-out duration-300"
                         >
                             Dashboard
                         </Link>
@@ -19,14 +93,14 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         <>
                             <Link
                                 href={route('login')}
-                                className="mx-1 bg-blue-50 dark:bg-orange-50 shadow-blue-400 shadow-[4px_4px_0_0] dark:shadow-orange-300 dark:shadow-[4px_4px_0_0] text-gray-700 cursor-pointer inline-block font-semibold text-md leading-[35px] text-center no-underline select-none touch-manipulation px-[18px] py-0 rounded-[30px] border-2 border-solid border-gray-700 hover:bg-blue-100  dark:hover:bg-orange-100 active:shadow-gray-700 active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5"
+                                className="mx-1 bg-blue-50 dark:bg-orange-50 shadow-blue-400 shadow-[4px_4px_0_0] dark:shadow-orange-300 dark:shadow-[4px_4px_0_0] text-gray-700 cursor-pointer inline-block font-semibold text-md leading-[35px] text-center no-underline select-none touch-manipulation px-[18px] py-0 rounded-[30px] border-2 border-solid border-gray-700 hover:scale-110 active:shadow-gray-700 active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5 transition ease-in-out duration-300"
                             >
                                 Log in
                             </Link>
 
                             <Link
                                 href={route('register')}
-                                className="ms-4 mx-1 bg-blue-50 dark:bg-orange-50 shadow-blue-400 shadow-[4px_4px_0_0] dark:shadow-orange-300 dark:shadow-[4px_4px_0_0] text-gray-700 cursor-pointer inline-block font-semibold text-md leading-[35px] text-center no-underline select-none touch-manipulation px-[18px] py-0 rounded-[30px] border-2 border-solid border-gray-700 hover:bg-blue-100 dark:hover:bg-orange-100 active:shadow-gray-700active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5"
+                                className="ms-4 mx-1 bg-blue-50 dark:bg-orange-50 shadow-blue-400 shadow-[4px_4px_0_0] dark:shadow-orange-300 dark:shadow-[4px_4px_0_0] text-gray-700 cursor-pointer inline-block font-semibold text-md leading-[35px] text-center no-underline select-none touch-manipulation px-[18px] py-0 rounded-[30px] border-2 border-solid border-gray-700 hover:scale-110 active:shadow-gray-700active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5 transition ease-in-out duration-300"
                             >
                                 Register
                             </Link>
@@ -34,8 +108,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     )}
                 </div>
 
-                <div className="min-h-screen h-full w-full p-8">
-
+                <div className="min-h-screen h-full w-full p-8 mt-20">
+                    <Table
+                        columns={columns}
+                        data={[]}
+                        title="Animal List"
+                        request={request}
+                    />
                 </div>
                 <Tooltip id="generalTooltip" className="tooltip"/>
             </div>
