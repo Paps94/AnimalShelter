@@ -3,8 +3,17 @@ import { Link, Head } from '@inertiajs/react';
 import { Tooltip } from 'react-tooltip';
 import Table, { DefaultColumnFilter, SelectColumnFilter } from '@/Components/Table/Table';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { calculateAge, calculateDays } from "@/lib/utils";
 
-export default function Welcome({ auth, request }) {
+export default function Welcome({ auth, animals }) {
+
+    const ageCalculator = ({ cell }) => {
+        return calculateAge(cell.row.values.birthday);
+    }
+
+    const daysCalculator = ({ cell }) => {
+        return calculateDays(cell.row.values.arrived_at_shelter);
+    }
 
     const columns = React.useMemo(
         () => [
@@ -26,7 +35,6 @@ export default function Welcome({ auth, request }) {
                 Header: "Type",
                 accessor: "type",
                 Filter: DefaultColumnFilter,
-                meta: request
             },
             {
                 Header: "Breed",
@@ -34,12 +42,28 @@ export default function Welcome({ auth, request }) {
                 Filter: DefaultColumnFilter,
             },
             {
-                Header: "Age",
-                accessor: "age",
+                Header: "Neutered/Spayed",
+                accessor: "castrated",
                 Filter: DefaultColumnFilter,
             },
             {
-                Header: "Weight",
+                Header: "Reserved",
+                accessor: "reserved",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Microchipped",
+                accessor: "microchipped",
+                Filter: DefaultColumnFilter,
+            },
+            {
+                Header: "Age",
+                accessor: "birthday",
+                Filter: DefaultColumnFilter,
+                Cell: ageCalculator
+            },
+            {
+                Header: "Weight (KGs)",
                 accessor: "weight",
                 Filter: DefaultColumnFilter,
             },
@@ -49,28 +73,24 @@ export default function Welcome({ auth, request }) {
                 Filter: DefaultColumnFilter,
             },
             {
-                Header: "Location",
-                accessor: "center",
-                Filter: DefaultColumnFilter,
-            },
-            {
                 Header: "# Day in shelter",
-                accessor: "days_in_shelter",
+                accessor: "arrived_at_shelter",
+                Filter: DefaultColumnFilter,
+                Cell: daysCalculator
+            },
+            {
+                Header: "Can live with children",
+                accessor: "live_with_cats",
                 Filter: DefaultColumnFilter,
             },
             {
-                Header: "Living with children",
-                accessor: "living_with_children",
+                Header: "Can live with dogs",
+                accessor: "live_with_dogs",
                 Filter: DefaultColumnFilter,
             },
             {
-                Header: "Living with dogs",
-                accessor: "living_with_dogs",
-                Filter: DefaultColumnFilter,
-            },
-            {
-                Header: "Living with cats",
-                accessor: "living_with_cats",
+                Header: "Can live with cats",
+                accessor: "live_with_kids",
                 Filter: DefaultColumnFilter,
             },
         ],
@@ -111,9 +131,8 @@ export default function Welcome({ auth, request }) {
                 <div className="min-h-screen h-full w-full p-8 mt-20">
                     <Table
                         columns={columns}
-                        data={[]}
+                        data={animals}
                         title="Animal List"
-                        request={request}
                     />
                 </div>
                 <Tooltip id="generalTooltip" className="tooltip"/>

@@ -38,7 +38,7 @@ function GlobalFilter({
             <input
                 type="text"
                 id="globalFilter"
-                className="w-full rounded-md bg-blue-50 dark:bg-orange-50 text-gray-900 cursor-text inline-block font-semibold text-md leading-[35px] no-underline select-none touch-manipulation py-0 border-2 border-solid border-gray-300 active:shadow-gray-700 active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5
+                className="w-full rounded-md bg-blue-50 dark:bg-orange-50 text-gray-900 cursor-text inline-block font-semibold text-md leading-[35px] no-underline select-none touch-manipulation py-0 border-2 border-solid border-gray-700 active:shadow-gray-700 active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5
                 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50
                 dark:focus:border-orange-300 dark:focus:ring dark:focus:ring-orange-200 dark:focus:ring-opacity-50"
                 value={value || ""}
@@ -63,7 +63,7 @@ export function DefaultColumnFilter({
                 type="text"
                 data-type="filter"
                 name={render("id")}
-                className="w-full rounded-md bg-blue-50 dark:bg-orange-50 text-gray-900 cursor-text inline-block font-semibold text-md leading-[35px] no-underline select-none touch-manipulation py-0 border-2 border-solid border-gray-300 active:shadow-gray-700 active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5
+                className="w-full rounded-md bg-blue-50 dark:bg-orange-50 text-gray-900 cursor-text inline-block font-semibold text-md leading-[35px] no-underline select-none touch-manipulation py-0 border-2 border-solid border-gray-700 active:shadow-gray-700 active:shadow-[2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5
                 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50
                 dark:focus:border-orange-300 dark:focus:ring dark:focus:ring-orange-200 dark:focus:ring-opacity-50"                value={filterValue || ""}
                 onChange={(e) => {
@@ -93,7 +93,7 @@ export function SelectColumnFilter({
     return (
         <div className="mt-2">
             <select
-                className="w-full rounded-md dark:bg-gray-300 dark:border-gray-900 text-gray-900 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="w-full rounded-md dark:bg-gray-300 dark:border-gray-900 text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 name={id}
                 data-type="filter"
                 id={id}
@@ -129,7 +129,7 @@ export function NumberRangeColumnFilter({
     return (
         <div className="mt-2 w-auto min-w-[245px]">
             <input
-                className="w-[100px] px-2 rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-900 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="w-[100px] px-2 rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 value={filterValue[0] || ""}
                 type="number"
                 onChange={(e) => {
@@ -143,7 +143,7 @@ export function NumberRangeColumnFilter({
             />
             <span className="mx-1">to</span>
             <input
-                className="w-[100px] px-2 rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-900 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="w-[100px] px-2 rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 value={filterValue[1] || ""}
                 type="number"
                 onChange={(e) => {
@@ -252,7 +252,7 @@ function Pagination({
                     <label>
                         <span className="sr-only">Items Per Page</span>
                         <select
-                            className="mt-1 block w-full rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-700 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            className="mt-1 block w-full rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-700 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             value={state.pageSize}
                             onChange={(e) => {
                                 setPageSize(Number(e.target.value));
@@ -506,7 +506,7 @@ function Table({
                                     {...getTableProps()}
                                     className="min-w-full divide-y divide-gray-200 "
                                 >
-                                    <thead className="bg-blue-100 dark:bg-slate-700">
+                                    <thead className="bg-blue-400 dark:bg-slate-700">
                                         {headerGroups.map((headerGroup) => (
                                             <tr
                                                 {...headerGroup.getHeaderGroupProps()}
@@ -516,7 +516,7 @@ function Table({
                                                         // Add the sorting props to control sorting.
                                                         <th
                                                             scope="col"
-                                                            className="w-auto group px-6 py-3 text-left text-sm font-black text-gray-700  dark:border-gray-300 dark:text-white uppercase tracking-wider"
+                                                            className="w-auto group px-6 py-3 text-left text-sm font-black text-slate-900  dark:border-gray-700 dark:text-white uppercase tracking-wider"
                                                             {...column.getHeaderProps()}
                                                         >
                                                             <div className="flex items-center justify-between"
@@ -550,7 +550,7 @@ function Table({
                                     </thead>
                                     <tbody
                                         {...getTableBodyProps()}
-                                        className="bg-gray-300 dark:bg-gray-900 divide-y divide-white dark:divide-gray-700"
+                                        className="bg-blue-100 dark:bg-gray-900 divide-y divide-white dark:divide-gray-700"
                                     >
                                         {page.map((row, i) => {
                                             prepareRow(row);
@@ -559,7 +559,7 @@ function Table({
                                                     {...row.getRowProps([
                                                         {
                                                             className:
-                                                                "dark:hover:bg-gray-700 hover:bg-gray-400 divide-x divide-dashed",
+                                                                "dark:hover:bg-gray-700 hover:bg-blue-200 divide-x divide-dashed text-slate-900",
                                                         },
                                                     ])}
                                                     data-document-id = {row.original.document_id}
@@ -568,7 +568,7 @@ function Table({
                                                         return (
                                                             <td
                                                                 {...cell.getCellProps()}
-                                                                className="px-6 py-4 whitespace-nowrap dark:hover:bg-gray-600 hover:bg-[--color-light-blue]"
+                                                                className="px-6 py-4 whitespace-nowrap dark:hover:bg-gray-600 hover:bg-blue-400"
                                                                 role="cell"
                                                                 onClick={() => {
                                                                     copy(cell.value)
