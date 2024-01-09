@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, Head } from '@inertiajs/react';
 import { Tooltip } from 'react-tooltip';
-import Table, { DefaultColumnFilter, SelectColumnFilter } from '@/Components/Table/Table';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Table, { DefaultColumnFilter, SelectColumnFilter, IconPiil } from '@/Components/Table/Table';
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/UI/Avatar"
 import { calculateAge, calculateDays } from "@/lib/utils";
 
 export default function Welcome({ auth, animals }) {
@@ -32,9 +32,11 @@ export default function Welcome({ auth, animals }) {
                 Filter: DefaultColumnFilter,
             },
             {
-                Header: "Type",
+                Header: "Category",
                 accessor: "type",
-                Filter: DefaultColumnFilter,
+                Filter: SelectColumnFilter,
+                filter: "includes",
+                Cell: IconPiil,
             },
             {
                 Header: "Breed",

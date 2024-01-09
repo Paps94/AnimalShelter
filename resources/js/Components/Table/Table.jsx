@@ -15,7 +15,7 @@ import {
     ChevronDoubleRightIcon,
 } from "@heroicons/react/20/solid";
 import { Button, PageButton, CartoonButton } from "./Button";
-import { cn, copy, uppercase } from "@/lib/utils";
+import { cn, copy, capitalise } from "@/lib/utils";
 import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 import { Icon } from "../UI/Icon";
 import $ from 'jquery';
@@ -105,7 +105,7 @@ export function SelectColumnFilter({
                 <option value="">All</option>
                 {options.map((option, i) => (
                     <option key={i} value={option}>
-                        {removeUnderscore(uppercase(option))}
+                        {capitalise(option)}
                     </option>
                 ))}
             </select>
@@ -159,24 +159,16 @@ export function NumberRangeColumnFilter({
     );
 }
 
-export function RolePill({ value }) {
-    const role = value ? value.toLowerCase().replace(/_/g, " ") : "unknown";
+export function IconPiil({ value, className }) {
 
     return (
-        <span
+        <Icon
             className={cn(
-                "px-3 py-2 uppercase leading-wide font-bold text-xs rounded-full shadow-sm",
-                role.startsWith("admin") ? "bg-sky-300 text-sky-800" : null,
-                role.startsWith("harbour master")
-                    ? "bg-purple-300 text-purple-800"
-                    : null,
-                role.startsWith("operator")
-                    ? "bg-amber-300 text-amber-800"
-                    : null
+                "font-bold text-2xl mr-2",
+                className
             )}
-        >
-            {role}
-        </span>
+            icon={value}
+        />
     );
 }
 
@@ -559,7 +551,7 @@ function Table({
                                                     {...row.getRowProps([
                                                         {
                                                             className:
-                                                                "dark:hover:bg-gray-700 hover:bg-blue-200 divide-x divide-dashed text-slate-900",
+                                                                "dark:hover:bg-gray-700 hover:bg-blue-200 divide-x divide-dashed text-slate-900 dark:text-white",
                                                         },
                                                     ])}
                                                     data-document-id = {row.original.document_id}

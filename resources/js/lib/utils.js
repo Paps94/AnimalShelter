@@ -30,12 +30,12 @@ export function copy(target) {
 }
 
 /**
- * Function that Uppercases a string
- * @param {*} $string 
+ * Function that capitalise a string
+ * @param {*} string 
  * @returns 
  */
-export function uppercase(string) {
-  return string.charAt(0).toUpperCase() + $string.slice(1);
+export function capitalise(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 /**

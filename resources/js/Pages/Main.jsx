@@ -20,6 +20,7 @@ export default function Main({ children }) {
         } else {
             setTheme("light");
         }
+        setTheme("dark"); //TODO REmove once done
         //Initialize library to use animation
         AOS.init();
     }, []);
