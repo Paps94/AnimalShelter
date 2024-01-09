@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Head } from '@inertiajs/react';
 import { Tooltip } from 'react-tooltip';
-import Table, { DefaultColumnFilter, SelectColumnFilter, IconPiil } from '@/Components/Table/Table';
+import Table, { DefaultColumnFilter, SelectColumnFilter, IconPiil, BooleanPill, SexPill } from '@/Components/Table/Table';
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/UI/Avatar"
 import { calculateAge, calculateDays } from "@/lib/utils";
 
@@ -47,16 +47,19 @@ export default function Welcome({ auth, animals }) {
                 Header: "Neutered/Spayed",
                 accessor: "castrated",
                 Filter: DefaultColumnFilter,
+                Cell: BooleanPill
             },
             {
                 Header: "Reserved",
                 accessor: "reserved",
                 Filter: DefaultColumnFilter,
+                Cell: BooleanPill
             },
             {
                 Header: "Microchipped",
                 accessor: "microchipped",
                 Filter: DefaultColumnFilter,
+                Cell: BooleanPill
             },
             {
                 Header: "Age",
@@ -72,7 +75,9 @@ export default function Welcome({ auth, animals }) {
             {
                 Header: "Sex",
                 accessor: "sex",
-                Filter: DefaultColumnFilter,
+                Filter: SelectColumnFilter,
+                filter: "equals",
+                Cell: SexPill
             },
             {
                 Header: "# Day in shelter",
@@ -84,16 +89,19 @@ export default function Welcome({ auth, animals }) {
                 Header: "Can live with children",
                 accessor: "live_with_cats",
                 Filter: DefaultColumnFilter,
+                Cell: BooleanPill
             },
             {
                 Header: "Can live with dogs",
                 accessor: "live_with_dogs",
                 Filter: DefaultColumnFilter,
+                Cell: BooleanPill
             },
             {
                 Header: "Can live with cats",
                 accessor: "live_with_kids",
                 Filter: DefaultColumnFilter,
+                Cell: BooleanPill
             },
         ],
         []

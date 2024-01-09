@@ -99,12 +99,13 @@ export function SelectColumnFilter({
                 id={id}
                 value={filterValue || ""}
                 onChange={(e) => {
+                    console.log(e.target.value);
                     setFilter(e.target.value || undefined);
                 }}
             >
                 <option value="">All</option>
                 {options.map((option, i) => (
-                    <option key={i} value={option}>
+                    <option key={i} value={option} className="p-4 dark:bg-gray-300 dark:border-gray-900 text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                         {capitalise(option)}
                     </option>
                 ))}
@@ -164,7 +165,7 @@ export function IconPiil({ value, className }) {
     return (
         <Icon
             className={cn(
-                "font-bold text-2xl mr-2",
+                "font-bold text-4xl",
                 className
             )}
             icon={value}
@@ -172,34 +173,45 @@ export function IconPiil({ value, className }) {
     );
 }
 
-export function DefaultPill({ value }) {
+export function BooleanPill({ value, className }) {
+    var icon = "check";
+    var custom = "text-3xl font-black";
+    if (value  == null || value == 0) {
+        icon = "xmark";
+        custom = "text-4xl"
+    }
     return (
-        <span
-            className={cn(
-                "px-10 py-2 uppercase leading-wide font-bold text-sm rounded-full shadow-sm bg-blue-300 text-gray-900 dark:bg-gray-300 dark:text-gray-800"
-            )}
-        >
-            {value}
-        </span>
+        <Icon
+        icon={icon}
+        className={cn(
+            "font-normal dark:text-orange-300",
+            className,
+            custom
+        )}
+    />
     );
 }
 
-export function NullPill({ value }) {
-    if (value  == null || value == 0) {
-        value =  <Icon
-            icon="xmark"
-            className="text-xs rounded-full w-6 h-6 p-1 bg-red-700 text-white"
-        />
-    } else {
-        value =  <Icon
-            icon="check"
-            className="text-xs rounded-full w-6 h-6 p-1 bg-green-700 text-white"
-        />
+export function SexPill({ value, className }) {
+    var icon = "mars";
+    var text = "M";
+    if (value  == 'female') {
+        icon = "venus";
+        text = "F";
     }
     return (
-        <span>
-            {value}
-        </span>
+        <>
+            <Icon
+                icon={icon}
+                className={cn(
+                    "font-bold text-3xl dark:text-orange-300 mr-2",
+                    className,
+                )}
+            />
+            <span className="font-bold text-3xl dark:text-orange-300">({text})</span>
+        </>
+        
+        
     );
 }
 
@@ -524,12 +536,12 @@ function Table({
                                                                 <span>
                                                                     {column.isSorted ? (
                                                                         column.isSortedDesc ? (
-                                                                            <SortDownIcon className="w-4 h-4 text-gray-400" />
+                                                                            <SortDownIcon className="w-4 h-4 text-slate-900 dark:text-white" />
                                                                         ) : (
-                                                                            <SortUpIcon className="w-4 h-4 text-gray-400" />
+                                                                            <SortUpIcon className="w-4 h-4 text-slate-900 dark:text-white" />
                                                                         )
                                                                     ) : (
-                                                                        <SortIcon className="w-4 h-4 text-gray-400 dark:text-white opacity-0 group-hover:opacity-100" />
+                                                                        <SortIcon className="w-4 h-4 text-slate-900 dark:text-white opacity-0 group-hover:opacity-100" />
                                                                     )}
                                                                 </span>
                                                             </div>
