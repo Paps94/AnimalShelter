@@ -1,7 +1,19 @@
 import React, { useState } from "react";
 import { Link, Head } from '@inertiajs/react';
 import { Tooltip } from 'react-tooltip';
-import Table, { DefaultColumnFilter, SelectColumnFilter, IconPiil, BooleanPill, SexPill, CheckBoxColumnFilter, MultipleFilter } from '@/Components/Table/Table';
+import Table, { 
+    DefaultColumnFilter, 
+    SelectColumnFilter, 
+    IconPiil, 
+    BooleanPill, 
+    SexPill, 
+    CheckBoxColumnFilter, 
+    multipleFilter, 
+    NumberRangeColumnFilter, 
+    SliderColumnFilter,
+    filterGreaterThan
+
+} from '@/Components/Table/Table';
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/UI/Avatar"
 import { calculateAge, calculateDays } from "@/lib/utils";
 
@@ -47,31 +59,33 @@ export default function Welcome({ auth, animals }) {
                 Header: "Neutered/Spayed",
                 accessor: "castrated",
                 Filter: CheckBoxColumnFilter,
-                filter: MultipleFilter,
+                filter: multipleFilter,
                 Cell: BooleanPill
             },
             {
                 Header: "Reserved",
                 accessor: "reserved",
-                Filter: DefaultColumnFilter,
+                Filter: CheckBoxColumnFilter,
+                filter: multipleFilter,
                 Cell: BooleanPill
             },
             {
                 Header: "Microchipped",
                 accessor: "microchipped",
-                Filter: DefaultColumnFilter,
+                Filter: CheckBoxColumnFilter,
+                filter: multipleFilter,
                 Cell: BooleanPill
             },
             {
                 Header: "Age",
                 accessor: "birthday",
-                Filter: DefaultColumnFilter,
                 Cell: ageCalculator
             },
             {
-                Header: "Weight (KGs)",
+                Header: "Weight",
                 accessor: "weight",
-                Filter: DefaultColumnFilter,
+                Filter: SliderColumnFilter,
+                filter: filterGreaterThan,
             },
             {
                 Header: "Sex",
@@ -83,25 +97,29 @@ export default function Welcome({ auth, animals }) {
             {
                 Header: "# Day in shelter",
                 accessor: "arrived_at_shelter",
-                Filter: DefaultColumnFilter,
+                Filter: NumberRangeColumnFilter,
+                filter: "between",
                 Cell: daysCalculator
             },
             {
                 Header: "Can live with children",
                 accessor: "live_with_cats",
-                Filter: DefaultColumnFilter,
+                Filter: CheckBoxColumnFilter,
+                filter: multipleFilter,
                 Cell: BooleanPill
             },
             {
                 Header: "Can live with dogs",
                 accessor: "live_with_dogs",
-                Filter: DefaultColumnFilter,
+                Filter: CheckBoxColumnFilter,
+                filter: multipleFilter,
                 Cell: BooleanPill
             },
             {
                 Header: "Can live with cats",
                 accessor: "live_with_kids",
-                Filter: DefaultColumnFilter,
+                Filter: CheckBoxColumnFilter,
+                filter: multipleFilter,
                 Cell: BooleanPill
             },
         ],

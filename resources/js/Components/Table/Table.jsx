@@ -114,13 +114,30 @@ export function SelectColumnFilter({
     );
 }
 
-export const MultipleFilter = (rows, accessor, filterValue) => {
+// Returns an array of multiple values to be included in the filter
+export const multipleFilter = (rows, accessor, filterValue) => {
     const arr = [];
     rows.forEach((val) => {
         if (filterValue.includes(val.original[accessor].toString())) arr.push(val);
     });
     return arr;
 };
+
+// Returns all the results which are less than the filtered value
+export const filterLessThan = (rows, id, filterValue) => {
+    return rows.filter(row => {
+        const rowValue = row.values[id];
+        return rowValue <= filterValue;
+    });
+}
+
+// Returns all the results which are greater than the filtered value
+export const filterGreaterThan = (rows, id, filterValue) => {
+    return rows.filter(row => {
+        const rowValue = row.values[id];
+        return rowValue >= filterValue;
+    });
+}
 
 // Adds and removes values from the array depending if they are already there or not
 function setFilteredParams(filterArr, val) {
@@ -176,6 +193,46 @@ export function CheckBoxColumnFilter({
     );
 }
 
+// This is a custom filter UI that uses a
+// slider to set the filter value between a column's
+// min and max values
+export function SliderColumnFilter({
+    column: { filterValue, setFilter, preFilteredRows, id }
+}) {
+    // Calculate the min and max
+    // using the preFilteredRows
+
+    const [min, max] = React.useMemo(() => {
+        let min = preFilteredRows.length ? preFilteredRows[0].values[id] : 0;
+        let max = preFilteredRows.length ? preFilteredRows[0].values[id] : 0;
+
+        preFilteredRows.forEach(row => {
+            min = Math.min(row.values[id], min);
+            max = Math.max(row.values[id], max);
+        });
+        return [min, max];
+    }, [id, preFilteredRows]);
+
+    return (
+        <>
+            <input
+                type="range"
+                min={min}
+                max={max}
+                value={filterValue || min}
+                step="0.25"
+                onChange={e => {
+                    setFilter(parseInt(e.target.value));
+                }}
+            />
+            <span className="block w-20 ml-2 p-2 rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                {filterValue == undefined ? "- Kg" : filterValue + " Kg"}
+            </span>
+            {/* <button onClick={() => setFilter(undefined)}>Reset</button> */}
+        </>
+    );
+}
+
 export function NumberRangeColumnFilter({
     column: { filterValue = [], preFilteredRows, setFilter, id },
 }) {
@@ -192,7 +249,7 @@ export function NumberRangeColumnFilter({
     return (
         <div className="mt-2 w-auto min-w-[245px]">
             <input
-                className="w-[100px] px-2 rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="w-[120px] px-2 rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 value={filterValue[0] || ""}
                 type="number"
                 onChange={(e) => {
@@ -206,7 +263,7 @@ export function NumberRangeColumnFilter({
             />
             <span className="mx-1">to</span>
             <input
-                className="w-[100px] px-2 rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="w-[120px] px-2 rounded-md dark:bg-gray-300 dark:border-gray-900 dark:text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 value={filterValue[1] || ""}
                 type="number"
                 onChange={(e) => {
@@ -223,7 +280,6 @@ export function NumberRangeColumnFilter({
 }
 
 export function IconPiil({ value, className }) {
-
     return (
         <Icon
             className={cn(
@@ -521,8 +577,11 @@ function Table({
     }, []);
 
     // Render the UI for your table
-    return (
+    return ( 
         <div className="bg-blue-50 opacity-90 dark:bg-slate-800 shadow-sm sm:rounded-lg min-w-[250px] grow">
+            {/* <pre>
+                <code>{JSON.stringify(state.filters, null, 2)}</code>
+            </pre> */}
             <div className="p-6 text-gray-900 dark:text-gray-100">
                 <div className="flex lg:flex-row flex-col justify-between gap-4 mb-6">
                     <div className="w-auto font-semibold text-2xl sm:text-3xl text-gray-800 dark:text-gray-200 leading-tight">
