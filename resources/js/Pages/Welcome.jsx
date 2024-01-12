@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Head } from '@inertiajs/react';
 import { Tooltip } from 'react-tooltip';
-import Table, { DefaultColumnFilter, SelectColumnFilter, IconPiil, BooleanPill, SexPill } from '@/Components/Table/Table';
+import Table, { DefaultColumnFilter, SelectColumnFilter, IconPiil, BooleanPill, SexPill, CheckBoxColumnFilter, MultipleFilter } from '@/Components/Table/Table';
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/UI/Avatar"
 import { calculateAge, calculateDays } from "@/lib/utils";
 
@@ -35,7 +35,7 @@ export default function Welcome({ auth, animals }) {
                 Header: "Category",
                 accessor: "type",
                 Filter: SelectColumnFilter,
-                filter: "includes",
+                filter: "equals",
                 Cell: IconPiil,
             },
             {
@@ -46,7 +46,8 @@ export default function Welcome({ auth, animals }) {
             {
                 Header: "Neutered/Spayed",
                 accessor: "castrated",
-                Filter: DefaultColumnFilter,
+                Filter: CheckBoxColumnFilter,
+                filter: MultipleFilter,
                 Cell: BooleanPill
             },
             {

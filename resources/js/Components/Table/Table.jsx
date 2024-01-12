@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "regenerator-runtime";
 import {
     useTable,
@@ -19,6 +19,7 @@ import { cn, copy, capitalise } from "@/lib/utils";
 import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 import { Icon } from "../UI/Icon";
 import $ from 'jquery';
+import { Label } from "./label";
 
 // Define a default UI for filtering
 function GlobalFilter({ 
@@ -99,7 +100,6 @@ export function SelectColumnFilter({
                 id={id}
                 value={filterValue || ""}
                 onChange={(e) => {
-                    console.log(e.target.value);
                     setFilter(e.target.value || undefined);
                 }}
             >
@@ -110,6 +110,68 @@ export function SelectColumnFilter({
                     </option>
                 ))}
             </select>
+        </div>
+    );
+}
+
+export const MultipleFilter = (rows, accessor, filterValue) => {
+    const arr = [];
+    rows.forEach((val) => {
+        if (filterValue.includes(val.original[accessor].toString())) arr.push(val);
+    });
+    return arr;
+};
+
+// Adds and removes values from the array depending if they are already there or not
+function setFilteredParams(filterArr, val) {
+    if (filterArr.includes(val)) {
+        filterArr = filterArr.filter((n) => {
+            return n !== val;
+        });
+    } else filterArr.push(val);
+    console.log(filterArr);
+
+    if (filterArr.length === 0) filterArr = undefined;
+    return filterArr;
+}
+
+
+// This is a custom filter UI for selecting
+// a unique option from a list
+export function CheckBoxColumnFilter({
+    column: { filterValue = [], setFilter, preFilteredRows, id }
+}) {
+    const options = useMemo(() => {
+        const options = new Set();
+        preFilteredRows.forEach((row) => {
+            options.add(row.values[id]);
+        });
+        return [...options.values()];
+    }, [id, preFilteredRows]);
+
+
+    return (
+        <div className="mt-2 flex flex-col gap-4 justify-start  sm:flex-row ">
+            {options.map((option, i) => (
+                
+                <div className="flex items-center space-x-2" key={i}>
+                    <input 
+                        type="checkbox"
+                        name={option == 1 ? 'Yes' : option == 0 ? 'No' : option}
+                        id={option == 1 ? 'Yes' : option == 0 ? 'No' : option}
+                        value={option}
+                        onChange={(e) => {
+                            setFilter(setFilteredParams(filterValue, e.target.value));
+                        }}
+                    />
+                    <Label
+                        htmlFor={option == 1 ? 'Yes' : option == 0 ? 'No' : option}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        {option == 1 ?  'Yes' : option == 0 ? 'No' : option}
+                    </Label>
+                </div>
+            ))}
         </div>
     );
 }
@@ -165,7 +227,7 @@ export function IconPiil({ value, className }) {
     return (
         <Icon
             className={cn(
-                "font-bold text-4xl",
+                "font-bold text-4xl text-orange-300",
                 className
             )}
             icon={value}
@@ -331,6 +393,10 @@ function ResetFilterButton({setAllFilters, setGlobalFilter}) {
         globalFilter.value = '';
     }, 200);
 
+    const resetCheckboxes = () => {
+        document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+    };
+
     return (
         <div className="flex gap-x-2 items-baseline flex-col">
             <label className="font-black text-lg text-gray-700 dark:text-white mb-1">Clear All Filters: </label>
@@ -344,6 +410,8 @@ function ResetFilterButton({setAllFilters, setGlobalFilter}) {
                     setAllFilters([]);
                     // Clears the global filter but does not empty the value from the input
                     setGlobalFilter(undefined);
+                    // Reset all checkboxes
+                    resetCheckboxes();
                 }}
             >
                 Clear Filters<Icon icon="xmark" className="ml-2"/>
@@ -376,7 +444,7 @@ function GenerateDynamicUrl() {
             <label className="font-black text-lg text-gray-700 dark:text-white mb-1">Generate URL: </label>
             <button
                 role="button"
-                className="h-[42px] inline-flex items-center px-4 py-2 bg-[--color-mid-blue] dark:bg-gray-200 border border-transparent rounded-md font-semibold text-center text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-[--color-dark-blue] dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:ring-[--color-yellow] focus:ring-[--color-mid-blue] focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 transition ease-in-out duration-300 undefined sm:mb-2 sm:ml-4 lg:float-right w-full sm:w-auto"
+                className="h-[42px] inline-flex items-center px-4 py-2 bg-[--color-mid-blue] dark:bg-gray-200 border border-transparent rounded-md font-semibold text-center text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-[--color-dark-blue] dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:ring-[--color-yellow] focus:ring-[--color-mid-blue] focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 transition ease-in-out duration-300 sm:mb-2 sm:ml-4 lg:float-right w-full sm:w-auto"
                 onClick={createUrl}
             >
                 Copy to clipboard<Icon icon="copy" className="ml-2"/>
