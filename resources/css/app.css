@@ -11,6 +11,17 @@
         --color-orange: #EE7D11;
         --color-gray: #374151;
 
+        --orange-1: #FFF7ED;
+        --orange-2: #FFEDD5;
+        --orange-3: #FDBA74;
+
+        --blue-1: #EFF6FF;
+        --blue-2: #DBEAFE;
+        --blue-3: #60A5FA;
+
+        --text-gray-900: #111827;
+        --text-white: #fff;
+
         --background: 0 0% 100%;
         --foreground: 20 14.3% 4.1%;
         --card: 0 0% 100%;
@@ -87,7 +98,7 @@
 }
 
 .dark *::-webkit-scrollbar-track {
-    background: #fff7ed;
+    background: var(--orange-1);
 }
 
 .dark *::-webkit-scrollbar-thumb {
@@ -109,4 +120,44 @@
     color: #fff;
     font-weight: 900;
     font-size: 16px;
+}
+
+/* React select custom  */
+.react-select__input {
+    box-shadow: none!important;
+    --tw-text-opacity: 1;
+    color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+.react-select__control {
+    box-shadow: none!important;
+    border: none!important;
+}
+
+.dark .react-select__option {
+    background-color: var(--orange-1);
+    color: var(--text-gray-900);
+}
+
+.dark .react-select__option:hover {
+    cursor: pointer;
+}
+
+.dark .react-select__option--is-selected {
+    background-color: var(--orange-3);
+    color: var(--text-gray-900);
+}
+
+
+.react-select__option {
+    background-color: var(--blue-1);
+    color: var(--text-gray-900);
+}
+
+.react-select__option:hover {
+    cursor: pointer;
+}
+
+.react-select__option--is-selected {
+    background-color: var(--blue-2);
+    color: var(--text-gray-900);
 }

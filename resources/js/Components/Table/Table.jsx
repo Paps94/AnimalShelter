@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import "regenerator-runtime";
 import {
     useTable,
@@ -20,6 +20,9 @@ import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 import { Icon } from "../UI/Icon";
 import $ from 'jquery';
 import { Label } from "./label";
+
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
 
 // Define a default UI for filtering
 function GlobalFilter({ 
@@ -77,12 +80,20 @@ export function DefaultColumnFilter({
 }
 
 // This is a custom filter UI for selecting a unique option from a list
-export function SelectColumnFilter({
-    column: { filterValue, setFilter, preFilteredRows, id },
-}) {
-    // Calculate the options for filtering
-    // using the preFilteredRows
-    const options = React.useMemo(() => {
+export const SelectColumnFilter = ({ column: { setFilter, preFilteredRows, id, filter } }) => {
+    const multi = typeof filter === "string" ? false : true;
+    const animatedComponents = makeAnimated(); 
+    
+    // Declare selectRef here
+    let selectRef = null;  
+
+    const clearValue = () => {
+        // Use the locally declared selectRef
+        selectRef.clearValue();
+    };
+
+    // Calculate the options for filtering using the preFilteredRows
+    const options = useMemo(() => {
         const options = new Set();
         preFilteredRows.forEach((row) => {
             options.add(row.values[id]);
@@ -93,23 +104,28 @@ export function SelectColumnFilter({
     // Render a multi-select box
     return (
         <div className="mt-2">
-            <select
-                className="w-full rounded-md dark:bg-gray-300 dark:border-gray-900 text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            <Select
+                ref={(ref) => {
+                    // Assign to the locally declared selectRef
+                    selectRef = ref;
+                }}
+                isMulti={multi}
+                components={animatedComponents}
+                className="rounded-md text-gray-900 font-semibold text-md"
                 name={id}
+                classNamePrefix="react-select"
                 data-type="filter"
                 id={id}
-                value={filterValue || ""}
+                options={options.map((option) => {
+                    return { value: option, label: option };
+                })}
                 onChange={(e) => {
-                    setFilter(e.target.value || undefined);
+                    filter === "equals"
+                    ? setFilter(e.value || undefined) // Set undefined to remove the filter entirely
+                    : setFilter(setFilteredParamsMultiSelect(e));
                 }}
-            >
-                <option value="">All</option>
-                {options.map((option, i) => (
-                    <option key={i} value={option} className="p-4 dark:bg-gray-300 dark:border-gray-900 text-gray-900 border-gray-700 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                        {capitalise(option)}
-                    </option>
-                ))}
-            </select>
+            />
+            <button hidden data-action="clear" onClick={clearValue}></button>
         </div>
     );
 }
@@ -139,22 +155,29 @@ export const filterGreaterThan = (rows, id, filterValue) => {
     });
 }
 
-// Adds and removes values from the array depending if they are already there or not
 function setFilteredParams(filterArr, val) {
     if (filterArr.includes(val)) {
         filterArr = filterArr.filter((n) => {
             return n !== val;
         });
     } else filterArr.push(val);
-    console.log(filterArr);
-
     if (filterArr.length === 0) filterArr = undefined;
+    console.log(filterArr);
     return filterArr;
 }
 
+// Adds and removes values from the array depending if they are already there or not
+function setFilteredParamsMultiSelect(val) {
+    var filterArr = [];
+    val.forEach(selectedOption => {
+        filterArr.push(selectedOption.value)
+    });
+    if (filterArr.length === 0) filterArr = undefined;
+    console.log(filterArr);
+    return filterArr;
+}
 
-// This is a custom filter UI for selecting
-// a unique option from a list
+// This is a custom filter UI for selecting a unique option from a list
 export function CheckBoxColumnFilter({
     column: { filterValue = [], setFilter, preFilteredRows, id }
 }) {
@@ -193,9 +216,7 @@ export function CheckBoxColumnFilter({
     );
 }
 
-// This is a custom filter UI that uses a
-// slider to set the filter value between a column's
-// min and max values
+// This is a custom filter UI that uses a slider to set the filter value between a column's min and max values
 export function SliderColumnFilter({
     column: { filterValue, setFilter, preFilteredRows, id }
 }) {
@@ -293,7 +314,7 @@ export function IconPiil({ value, className }) {
 
 export function BooleanPill({ value, className }) {
     var icon = "check";
-    var custom = "text-3xl font-black";
+    var custom = "text-3xl";
     if (value  == null || value == 0) {
         icon = "xmark";
         custom = "text-4xl"
@@ -302,7 +323,7 @@ export function BooleanPill({ value, className }) {
         <Icon
         icon={icon}
         className={cn(
-            "font-normal dark:text-orange-300",
+            "font-normal dark:text-orange-300 text-gray-700",
             className,
             custom
         )}
@@ -443,7 +464,7 @@ function Pagination({
 }
 
 // Define a default UI for filtering
-function ResetFilterButton({setAllFilters, setGlobalFilter}) {
+function ResetFilterButton({ setAllFilters, setGlobalFilter }) {
     const clearGlobalFilter = useAsyncDebounce(() => {
         let globalFilter = document.getElementById('globalFilter');
         globalFilter.value = '';
@@ -451,6 +472,16 @@ function ResetFilterButton({setAllFilters, setGlobalFilter}) {
 
     const resetCheckboxes = () => {
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+    };
+
+    const resetMultiSelects = () => {
+        // Find all buttons with data-action="clear"
+        const clearButtons = document.querySelectorAll('button[data-action="clear"]');
+
+        // Loop through all the found buttons and simulate a click on each
+        clearButtons.forEach(button => {
+            button.click();
+        });
     };
 
     return (
@@ -468,6 +499,8 @@ function ResetFilterButton({setAllFilters, setGlobalFilter}) {
                     setGlobalFilter(undefined);
                     // Reset all checkboxes
                     resetCheckboxes();
+                    // Clears all select values visually
+                    resetMultiSelects();
                 }}
             >
                 Clear Filters<Icon icon="xmark" className="ml-2"/>
@@ -579,9 +612,9 @@ function Table({
     // Render the UI for your table
     return ( 
         <div className="bg-blue-50 opacity-90 dark:bg-slate-800 shadow-sm sm:rounded-lg min-w-[250px] grow">
-            {/* <pre>
+            <pre>
                 <code>{JSON.stringify(state.filters, null, 2)}</code>
-            </pre> */}
+            </pre>
             <div className="p-6 text-gray-900 dark:text-gray-100">
                 <div className="flex lg:flex-row flex-col justify-between gap-4 mb-6">
                     <div className="w-auto font-semibold text-2xl sm:text-3xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -597,8 +630,8 @@ function Table({
                         />
                     </div>
                     <div className="md:flex md:gap-x-2 sm:ml-4 sm:mt-0 mt-2">
-                        <ResetFilterButton 
-                            setAllFilters={setAllFilters} 
+                        <ResetFilterButton
+                            setAllFilters={setAllFilters}
                             setGlobalFilter={setGlobalFilter}
                             globalFilter={state.globalFilter}
                         />

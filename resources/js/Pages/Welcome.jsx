@@ -47,13 +47,14 @@ export default function Welcome({ auth, animals }) {
                 Header: "Category",
                 accessor: "type",
                 Filter: SelectColumnFilter,
-                filter: "equals",
+                filter: multipleFilter,
                 Cell: IconPiil,
             },
             {
                 Header: "Breed",
                 accessor: "breed",
-                Filter: DefaultColumnFilter,
+                Filter: SelectColumnFilter,
+                filter: multipleFilter,
             },
             {
                 Header: "Neutered/Spayed",
@@ -95,10 +96,8 @@ export default function Welcome({ auth, animals }) {
                 Cell: SexPill
             },
             {
-                Header: "# Day in shelter",
+                Header: "# Days in shelter",
                 accessor: "arrived_at_shelter",
-                Filter: NumberRangeColumnFilter,
-                filter: "between",
                 Cell: daysCalculator
             },
             {
