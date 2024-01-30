@@ -60,7 +60,7 @@ export function calculateAge(date) {
   months = age.months() == 1 ? ' month' : ' months';
 
   // Return the age in string
-  return age.years() + years + age.months() + months;
+  return (age.years() ? age.years() + years : '') + (age.months() ? age.months() + months : '');
 }
 
 /**
