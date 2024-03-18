@@ -7,6 +7,7 @@ import {
     useAsyncDebounce,
     useSortBy,
     usePagination,
+    useFlexLayout,
 } from "react-table";
 import {
     ChevronDoubleLeftIcon,
@@ -15,7 +16,7 @@ import {
     ChevronDoubleRightIcon,
 } from "@heroicons/react/20/solid";
 import { Button, PageButton, CartoonButton } from "./Button";
-import { cn, copy, capitalise } from "@/lib/utils";
+import { cn, copy } from "@/lib/utils";
 import { SortIcon, SortUpIcon, SortDownIcon } from "./Icons";
 import { Icon } from "../UI/Icon";
 import $ from 'jquery';
@@ -551,6 +552,16 @@ function Table({
     request = null
 }) {
 
+    const defaultColumn = React.useMemo(
+        () => ({
+          // When using the useFlexLayout:
+          minWidth: 50, // minWidth is only used as a limit for resizing
+          width: 250, // width is used for both the flex-basis and flex-grow
+          maxWidth: 500, // maxWidth is only used as a limit for resizing
+        }),
+        []
+    )
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -578,6 +589,7 @@ function Table({
         {
             columns,
             data,
+            defaultColumn,
             initialState: {
                 pageSize: defaultPageSize,
             },
@@ -585,6 +597,7 @@ function Table({
         useFilters,
         useGlobalFilter,
         useSortBy,
+        useFlexLayout,
         usePagination
     );
 
