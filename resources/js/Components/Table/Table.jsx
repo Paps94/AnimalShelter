@@ -603,17 +603,6 @@ function Table({
 
     // Mimics the scollbar behaviour from the bottom of the page to the one at the top
     useEffect(() => {
-        $(function(){
-            $("#wmd-view-topscroll").scroll(function(){
-                $("#wmd-view")
-                    .scrollLeft($("#wmd-view-topscroll").scrollLeft());
-            });
-            $("#wmd-view").scroll(function(){
-                $("#wmd-view-topscroll")
-                    .scrollLeft($("#wmd-view").scrollLeft());
-            });
-        });
-
         // If there is a request in the url set it in our filters
         if (request) {
             for (const key in request) {
@@ -634,7 +623,7 @@ function Table({
                         {title}
                     </div>
                 </div>
-                <div className="flex flex-col sm:flex-row">
+                <div className="flex flex-col w-full sm:flex-row">
                     <div className="md:flex md:gap-x-2">
                         <GlobalFilter
                             preGlobalFilteredRows={preGlobalFilteredRows}
@@ -657,125 +646,102 @@ function Table({
                         </div>
                     }   
                 </div>
-                <Pagination 
-                    canPreviousPage={canPreviousPage} 
-                    canNextPage={canNextPage}
-                    pageOptions={pageOptions}
-                    pageCount={pageCount}
-                    gotoPage={gotoPage}
-                    nextPage={nextPage}
-                    previousPage={previousPage}
-                    setPageSize={setPageSize}
-                    state={state}
-                    defaultPageSize={defaultPageSize}
-                    totalNoOfRecords={data.length}
-                />
                 {/* table */}
-                {/* Mimic the scrollbar behaviour */}
-                <div id="wmd-view-topscroll" className="mt-4 -mb-4 overflow-x-scroll overflow-y-hidden h-5">
-                    <div className="w-[4000px]"></div>
-                </div>
-                <div id="wmd-view" className="overflow-x-scroll overflow-y-hidden ">
-                    <div className="overflow-auto mt-4 flex flex-col w-[4000px]">
-                        <div className="py-2 align-middle inline-block min-w-full">
-                            <div className="shadow overflow-hidden border-b border-gray-200 dark:border-gray-700 sm:rounded-lg">
-                                <table
-                                    {...getTableProps()}
-                                    className="min-w-full divide-y divide-gray-200 "
-                                >
-                                    <thead className="bg-blue-400 dark:bg-slate-700">
-                                        {headerGroups.map((headerGroup) => (
-                                            <tr
-                                                {...headerGroup.getHeaderGroupProps()}
-                                            >
-                                                {headerGroup.headers.map(
-                                                    (column) => (
-                                                        // Add the sorting props to control sorting.
-                                                        <th
-                                                            scope="col"
-                                                            className="w-auto group px-6 py-3 text-left text-sm font-black text-slate-900  dark:border-gray-700 dark:text-white uppercase tracking-wider"
-                                                            {...column.getHeaderProps()}
-                                                        >
-                                                            <div className="flex items-center justify-between"
-                                                            {...column.getHeaderProps(
-                                                                column.getSortByToggleProps()
-                                                            )}
-                                                            > 
-
-                                                                {column.render(
-                                                                    "Header"
-                                                                )}
-                                                                {/* Add a sort direction indicator */}
-                                                                <span>
-                                                                    {column.isSorted ? (
-                                                                        column.isSortedDesc ? (
-                                                                            <SortDownIcon className="w-4 h-4 text-slate-900 dark:text-white" />
-                                                                        ) : (
-                                                                            <SortUpIcon className="w-4 h-4 text-slate-900 dark:text-white" />
-                                                                        )
-                                                                    ) : (
-                                                                        <SortIcon className="w-4 h-4 text-slate-900 dark:text-white opacity-0 group-hover:opacity-100" />
-                                                                    )}
-                                                                </span>
-                                                            </div>
-                                                            {column.Filter ? column.render("Filter") : null}
-                                                        </th>
-                                                    )
-                                                )}
-                                            </tr>
-                                        ))}
-                                    </thead>
-                                    <tbody
-                                        {...getTableBodyProps()}
-                                        className="bg-blue-100 dark:bg-gray-900 divide-y divide-white dark:divide-gray-700"
+                    <div className="max-h-[900px] h-auto w-full mt-4 overflow-scroll align-middle flex flex-col shadow border-b border-gray-200 dark:border-gray-700 rounded-lg">
+                        <table
+                            {...getTableProps()}
+                            className="w-full h-full rounded-lg min-w-full divide-y divide-gray-200 "
+                        >
+                            <thead className="bg-blue-400 dark:bg-slate-700 sticky top-0 z-10">
+                                {headerGroups.map((headerGroup) => (
+                                    <tr
+                                        {...headerGroup.getHeaderGroupProps()}
                                     >
-                                        {page.map((row, i) => {
-                                            prepareRow(row);
-                                            return (
-                                                <tr
-                                                    {...row.getRowProps([
-                                                        {
-                                                            className:
-                                                                "dark:hover:bg-gray-700 hover:bg-blue-200 divide-x divide-dashed text-slate-900 dark:text-white",
-                                                        },
-                                                    ])}
-                                                    data-document-id = {row.original.document_id}
+                                        {headerGroup.headers.map(
+                                            (column) => (
+                                                // Add the sorting props to control sorting.
+                                                <th
+                                                    scope="col"
+                                                    className="w-auto group px-6 py-3 text-left text-sm font-black text-slate-900  dark:border-gray-700 dark:text-white uppercase tracking-wider"
+                                                    {...column.getHeaderProps()}
                                                 >
-                                                    {row.cells.map((cell) => {
-                                                        return (
-                                                            <td
-                                                                {...cell.getCellProps()}
-                                                                className="px-6 py-4 whitespace-nowrap dark:hover:bg-gray-600 hover:bg-blue-400"
-                                                                role="cell"
-                                                                onClick={() => {
-                                                                    copy(cell.value)
-                                                                }}
-                                                            >
-                                                                {cell.column.Cell
-                                                                    .name ===
-                                                                "defaultRenderer" ? (
-                                                                    <div className="text-sm text-gray-500">
-                                                                        {cell.render(
-                                                                            "Cell"
-                                                                        )}
-                                                                    </div>
+                                                    <div className="flex items-center justify-between"
+                                                    {...column.getHeaderProps(
+                                                        column.getSortByToggleProps()
+                                                    )}
+                                                    > 
+
+                                                        {column.render(
+                                                            "Header"
+                                                        )}
+                                                        {/* Add a sort direction indicator */}
+                                                        <span>
+                                                            {column.isSorted ? (
+                                                                column.isSortedDesc ? (
+                                                                    <SortDownIcon className="w-4 h-4 text-slate-900 dark:text-white" />
                                                                 ) : (
-                                                                    cell.render(
-                                                                        "Cell"
-                                                                    )
+                                                                    <SortUpIcon className="w-4 h-4 text-slate-900 dark:text-white" />
+                                                                )
+                                                            ) : (
+                                                                <SortIcon className="w-4 h-4 text-slate-900 dark:text-white opacity-0 group-hover:opacity-100" />
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                    {column.Filter ? column.render("Filter") : null}
+                                                </th>
+                                            )
+                                        )}
+                                    </tr>
+                                ))}
+                            </thead>
+                            <tbody
+                                {...getTableBodyProps()}
+                                className="bg-blue-100 dark:bg-gray-900 divide-y divide-white dark:divide-gray-700"
+                            >
+                                {page.map((row, i) => {
+                                    prepareRow(row);
+                                    return (
+                                        <tr
+                                            {...row.getRowProps([
+                                                {
+                                                    className:
+                                                        "dark:hover:bg-gray-700 hover:bg-blue-200 divide-x divide-dashed text-slate-900 dark:text-white",
+                                                },
+                                            ])}
+                                            data-document-id = {row.original.document_id}
+                                        >
+                                            {row.cells.map((cell) => {
+                                                return (
+                                                    <td
+                                                        {...cell.getCellProps()}
+                                                        className="px-6 py-4 whitespace-nowrap dark:hover:bg-gray-600 hover:bg-blue-400"
+                                                        role="cell"
+                                                        onClick={() => {
+                                                            copy(cell.value)
+                                                        }}
+                                                    >
+                                                        {cell.column.Cell
+                                                            .name ===
+                                                        "defaultRenderer" ? (
+                                                            <div className="text-sm text-gray-500">
+                                                                {cell.render(
+                                                                    "Cell"
                                                                 )}
-                                                            </td>
-                                                        );
-                                                    })}
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                                            </div>
+                                                        ) : (
+                                                            cell.render(
+                                                                "Cell"
+                                                            )
+                                                        )}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
                     </div>
-                </div>
                 <Pagination 
                     canPreviousPage={canPreviousPage} 
                     canNextPage={canNextPage}

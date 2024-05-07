@@ -42,6 +42,12 @@
         --input: 20 5.9% 90%;
         --ring: 24.6 95% 53.1%;
         --radius: 0.5rem;
+
+        --c1: rgb(3, 7, 18);
+        --c2: rgb(163, 230, 53);
+        
+        --left-color: var(--c1);
+        --right-color: var(--c2);
     }
 
     .dark {
@@ -160,4 +166,29 @@
 .react-select__option--is-selected {
     background-color: var(--blue-2);
     color: var(--text-gray-900);
+}
+
+#left-side {
+    width: 60%;
+    z-index: 2;
+}
+
+#left-side .title {
+    color: white;
+}
+
+#left-side .fancy {
+    color: var(--right-color);
+}
+/* 
+#right-side {
+    background-color: var(--right-color); 
+} */
+
+#right-side .title {
+    color: var(--dark);
+}
+
+#right-side .fancy {
+    color: white;
 }

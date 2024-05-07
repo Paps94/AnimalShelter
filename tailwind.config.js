@@ -26,6 +26,8 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+        basic: ['Montserrat', ...defaultTheme.fontFamily.sans],
+        fancy: ['Permanent Marker', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         border: "hsl(var(--border))",
