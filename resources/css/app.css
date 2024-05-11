@@ -114,6 +114,7 @@
 
 /* Dark mode tooltip  */
 .dark .tooltipParent .tooltip {
+    z-index: 40;
     background-color: #fff;
     color: rgb(30 41 59);
     font-weight: 900;
@@ -122,6 +123,7 @@
 
 /* Light mode tooltip */
 .tooltipParent .tooltip {
+    z-index: 40;
     background-color: rgb(30 41 59);
     color: #fff;
     font-weight: 900;
